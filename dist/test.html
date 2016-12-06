@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+ 	<div id="hello">test: </div>
+	<div id="rex">rex: </div>
+</body>
+</html>
+<script>
+
+
+
+
+ var text = '@@[c0026510411][sys_sysparams](id,CODE)';
+ 
+ var commandRegExp = /^@@([\S]+)/g,
+  /**
+   * 匹配表名和工号：[sys_sysparams][c0026510411]
+   * @type {[RegExp]}
+   */
+   referenceRegExp =  /\[([^\]]*?)] ?(?:\n *)?\[(.*?)]/g,
+  /**
+   * 匹配带插入的值: 如(id,CODE)
+   * @type {RegExp}
+   */
+   inLineValuesRegExp = /\((.*)\)/g,
+   ref = referenceRegExp.exec(text);
+  var sqlTemplet = "--create by %0 \n insert into %1 (id, code) values('%2', '%3');";
+  console.log(ref);
+  value = (inLineValuesRegExp.exec(text) + '').split(',');
+  console.log(value);
+
+  sqlTemplet = sqlTemplet.replace(/%0/g, ref[1]).replace(/%1/g, ref[2]).replace(/%2/g, value[2]).replace(/%3/g, value[3]);
+ document.querySelector('#hello').innerText = sqlTemplet;
+ console.log('innerHTML:'+document.querySelector('#hello').innerText);
+</script>
